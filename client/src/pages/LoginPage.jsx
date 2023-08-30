@@ -1,10 +1,17 @@
 import { useForm } from "react-hook-form";
 import { useAuth } from "../context/authcontext";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function LoginPage(){
 
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const { signin, errors: signinErrors } = useAuth();
+    const { signin, isAuthenticated, errors: signinErrors } = useAuth();
+    const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(isAuthenticated) navigate('/tasks');
+    }, [isAuthenticated, navigate])
 
     const onSubmited = handleSubmit(async (data)=> {
         signin(data);
